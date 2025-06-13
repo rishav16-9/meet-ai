@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 
 const formSchema = z
   .object({
@@ -35,7 +36,7 @@ const formSchema = z
 export const SignUpView = () => {
   const router = useRouter();
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>("");
+  const [error, setError] = useState<string | null>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,11 +55,31 @@ export const SignUpView = () => {
         name: data.name,
         email: data.email,
         password: data.password,
+        callbackURL: "/",
       },
       {
         onSuccess: () => {
           setPending(false);
           router.push("/");
+        },
+        onError: ({ error }) => {
+          setPending(false);
+          setError(error.message);
+        },
+      }
+    );
+  };
+  const onSocial = (provider: "google" | "github") => {
+    setError(null);
+    setPending(true);
+    authClient.signIn.social(
+      {
+        provider: provider,
+        callbackURL: "/",
+      },
+      {
+        onSuccess: () => {
+          setPending(false);
         },
         onError: ({ error }) => {
           setPending(false);
@@ -174,16 +195,18 @@ export const SignUpView = () => {
                       type="button"
                       disabled={pending}
                       className="w-full"
+                      onClick={() => onSocial("google")}
                     >
-                      Google
+                      <FaGoogle />
                     </Button>
                     <Button
                       variant="outline"
                       type="button"
                       disabled={pending}
                       className="w-full"
+                      onClick={() => onSocial("github")}
                     >
-                      Github
+                      <FaGithub />
                     </Button>
                   </div>
                   <div className="text-center text-sm">
