@@ -222,7 +222,7 @@ export const SignUpView = () => {
               </div>
             </form>
           </Form>
-          <div className="bg-radial from-green-700 to-green-900 hidden md:flex flex-col gap-y-4 justify-center items-center">
+          <div className="bg-radial from-sidebar-accent to-sidebar hidden md:flex flex-col gap-y-4 justify-center items-center">
             <img src="/logo.svg" alt="logo" className="h-[92px] w-[92px]" />
             <p className="text-3xl font-semibold text-white">Meet.ai</p>
           </div>
