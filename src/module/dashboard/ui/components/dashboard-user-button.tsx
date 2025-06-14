@@ -52,7 +52,7 @@ export const DashboardUserButton = () => {
             <p className="text-sm truncate w-full">{data.user.name}</p>
             <p className="text-xs truncate w-full">{data.user.email}</p>
           </div>
-          <ChevronDownIcon className="size-4 shrink-1" />
+          <ChevronDownIcon className="size-4 shrink-0" />
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>
