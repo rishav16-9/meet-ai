@@ -21,13 +21,13 @@ import { GeneratedAvatar } from "@/components/generated-avatar";
 import { toast } from "sonner";
 
 interface AgentFormProps {
-  onSuceess?: () => void;
+  onSuccess?: () => void;
   onCancel?: () => void;
   initialValue?: AgentsGetOne;
 }
 
 export const AgentForm = ({
-  onSuceess,
+  onSuccess,
   onCancel,
   initialValue,
 }: AgentFormProps) => {
@@ -37,13 +37,30 @@ export const AgentForm = ({
   const createAgent = useMutation(
     trpc.agents.create.mutationOptions({
       onSuccess: async () => {
-        await queryClient.invalidateQueries(trpc.agents.getMany.queryOptions({}));
+        await queryClient.invalidateQueries(
+          trpc.agents.getMany.queryOptions({})
+        );
+        onSuccess?.();
+        form.reset();
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    })
+  );
+
+  const updateAgent = useMutation(
+    trpc.agents.update.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(
+          trpc.agents.getMany.queryOptions({})
+        );
         if (initialValue?.id) {
           await queryClient.invalidateQueries(
             trpc.agents.getOne.queryOptions({ id: initialValue.id })
           );
         }
-        onSuceess?.();
+        onSuccess?.();
         form.reset();
       },
       onError: (error) => {
@@ -61,9 +78,10 @@ export const AgentForm = ({
   });
 
   const isEdit = !!initialValue?.id;
-  const isPending = createAgent.isPending;
+  const isPending = createAgent.isPending || updateAgent.isPending;
   const onSubmit = (values: z.infer<typeof agentsInsertSchema>) => {
     if (isEdit) {
+      updateAgent.mutate({ ...values, id: initialValue?.id });
     } else {
       createAgent.mutate(values);
     }

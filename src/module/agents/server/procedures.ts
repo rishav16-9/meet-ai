@@ -2,8 +2,12 @@ import { z } from "zod";
 import { db } from "@/db";
 import { and, desc, eq, getTableColumns, ilike, sql, count } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
-import { agents, user } from "@/db/schema";
-import { agentsInsertSchema, agentsUpdateSchema } from "../schemas";
+import { agents } from "@/db/schema";
+import {
+  agentDeleteSchema,
+  agentsInsertSchema,
+  agentsUpdateSchema,
+} from "../schemas";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, MIN_PAGE_SIZE } from "@/constants";
 
@@ -93,49 +97,34 @@ export const agentsRouter = createTRPCRouter({
   update: protectedProcedure
     .input(agentsUpdateSchema)
     .mutation(async ({ input, ctx }) => {
-      const { name, instructions, id } = input;
       const { id: userId } = ctx.auth.user;
 
-      const [userData] = await db
-        .select()
-        .from(user)
-        .where(eq(user.id, userId));
-
-      if (!userData) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
-      }
-      const [update] = await db
+      const [updateAgent] = await db
         .update(agents)
         .set({
-          name,
-          instructions,
+          ...input,
         })
-        .where(and(eq(agents.id, id), eq(agents.userId, userData.id)))
+        .where(and(eq(agents.id, input.id), eq(agents.userId, userId)))
         .returning();
-
-      return update;
+      if (!updateAgent) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Agent not found" });
+      }
+      return updateAgent;
     }),
 
   remove: protectedProcedure
-    .input(agentsUpdateSchema)
+    .input(agentDeleteSchema)
     .mutation(async ({ ctx, input }) => {
-      const { userId } = ctx.auth.session;
+      const { id: userId } = ctx.auth.user;
       const { id } = input;
 
-      const [userData] = await db
-        .select()
-        .from(user)
-        .where(eq(user.id, userId));
-
-      if (!userData) {
-        throw new TRPCError({ code: "NOT_FOUND", message: "User not found" });
-      }
-
-      const [remove] = await db
+      const [removeAgent] = await db
         .delete(agents)
-        .where(and(eq(agents.id, id), eq(agents.userId, userData.id)))
+        .where(and(eq(agents.id, id), eq(agents.userId, userId)))
         .returning();
-
-      return remove;
+      if (!removeAgent) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Agent not found" });
+      }
+      return removeAgent;
     }),
 });
