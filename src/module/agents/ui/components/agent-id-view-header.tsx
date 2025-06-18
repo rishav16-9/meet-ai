@@ -22,7 +22,7 @@ export const AgentIdViewHeader = ({
       <BreadcrumbNavigation agentName={agentName} />
       {/* without modal false the dialog that this dropdown opens cause the webside to get unclickable */}
       <DropdownMenu modal={false}>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger asChild>
           <Button variant="ghost">
             <MoreVerticalIcon />
           </Button>
