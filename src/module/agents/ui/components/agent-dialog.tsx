@@ -15,7 +15,7 @@ export const AgentDialog = ({ open, onOpenChange }: AgentDialogProps) => {
       onOpenChange={onOpenChange}
     >
       <AgentForm
-        onSuceess={() => onOpenChange(false)}
+        onSuccess={() => onOpenChange(false)}
         onCancel={() => onOpenChange(false)}
       />
     </ResponsiveDialog>

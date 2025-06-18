@@ -21,13 +21,13 @@ import { GeneratedAvatar } from "@/components/generated-avatar";
 import { toast } from "sonner";
 
 interface AgentFormProps {
-  onSuceess?: () => void;
+  onSuccess?: () => void;
   onCancel?: () => void;
   initialValue?: AgentsGetOne;
 }
 
 export const AgentForm = ({
-  onSuceess,
+  onSuccess,
   onCancel,
   initialValue,
 }: AgentFormProps) => {
@@ -40,7 +40,7 @@ export const AgentForm = ({
         await queryClient.invalidateQueries(
           trpc.agents.getMany.queryOptions({})
         );
-        onSuceess?.();
+        onSuccess?.();
         form.reset();
       },
       onError: (error) => {
@@ -60,7 +60,7 @@ export const AgentForm = ({
             trpc.agents.getOne.queryOptions({ id: initialValue.id })
           );
         }
-        onSuceess?.();
+        onSuccess?.();
         form.reset();
       },
       onError: (error) => {

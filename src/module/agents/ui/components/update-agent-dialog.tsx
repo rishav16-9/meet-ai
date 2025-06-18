@@ -22,7 +22,7 @@ export const UpdateAgentDialog = ({
     >
       <AgentForm
         initialValue={initialValue}
-        onSuceess={() => onOpenChange(false)}
+        onSuccess={() => onOpenChange(false)}
         onCancel={() => onOpenChange(false)}
       />
     </ResponsiveDialog>
