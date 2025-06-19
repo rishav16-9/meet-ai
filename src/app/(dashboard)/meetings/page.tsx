@@ -2,7 +2,7 @@ import {
   MeetingsView,
   MeetingsViewError,
   MeetingsViewLoading,
-} from "@/module/meetings/ui/views/meetins-view";
+} from "@/module/meetings/ui/views/meetings-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
