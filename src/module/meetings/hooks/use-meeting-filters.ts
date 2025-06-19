@@ -7,5 +7,6 @@ export const useMeetingsFilter = () => {
       .withDefault(DEFAULT_PAGE)
       .withOptions({ clearOnDefault: true }),
     search: parseAsString.withDefault("").withOptions({ clearOnDefault: true }),
+    
   });
 };
