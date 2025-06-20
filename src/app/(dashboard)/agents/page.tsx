@@ -11,7 +11,7 @@ import {
   AgentsViewError,
   AgentsViewLoading,
 } from "@/module/agents/ui/views/agents-view";
-import type { SearchParams } from "nuqs";
+import type { SearchParams } from "nuqs/server";
 
 import { loadSearchParams } from "@/module/agents/params";
 
