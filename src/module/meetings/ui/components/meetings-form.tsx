@@ -160,7 +160,7 @@ export const MeetingsForm = ({
                     className="text-primary hover:underline"
                     onClick={() => setOpenNewAgentDialog(true)}
                   >
-                    Create new button
+                    Create new agent
                   </button>
                 </FormDescription>
               </FormItem>
