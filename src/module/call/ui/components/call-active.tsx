@@ -15,14 +15,9 @@ export const CallActive = ({ onLeave, meetingName }: Props) => {
           href="/"
           className="flex items-center justify-center p-1 bg-white/10 rounded-full"
         >
-          <Image src="/logo/svg" width={22} height={22} alt="logo" />
+          <Image src="/logo.svg" width={22} height={22} alt="logo" />
         </Link>
-        <h4
-          className="h-4
-        "
-        >
-          {meetingName}
-        </h4>
+        <h4 className="text-base font-medium">{meetingName}</h4>
       </div>
       <SpeakerLayout />
       <div className="bg-[#101213] rounded-full px-4">
