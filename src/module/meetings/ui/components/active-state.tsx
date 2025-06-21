@@ -16,7 +16,7 @@ export const ActiveState = ({ meetingId }: ActiveStateProps) => {
       />
       <div className="flex flex-col-reverse lg:flex-row items-center lg:justify-center gap-2 w-full">
         <Button asChild className="w-full lg:w-auto">
-          <Link href={`/call${meetingId}`}>
+          <Link href={`/call/${meetingId}`}>
             <VideoIcon />
             Join meeting
           </Link>
