@@ -32,7 +32,7 @@ Example:
     `.trim(),
   model: openai({
     model: "gpt-4o",
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY!,
   }),
 });
 export const meetingsProcessing = inngest.createFunction(
