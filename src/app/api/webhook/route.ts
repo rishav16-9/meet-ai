@@ -86,14 +86,22 @@ export async function POST(req: NextRequest) {
 
     const call = streamClient.video.call("default", meetingId);
 
-    const realtimeClient = await streamClient.video.connectOpenAi({
-      call,
-      openAiApiKey: process.env.OPENAI_API_KEY!,
-      agentUserId: existingAgent.id,
-    });
-    realtimeClient.updateSession({
-      instructions: existingAgent.instructions,
-    });
+    try {
+      const realtimeClient = await streamClient.video.connectOpenAi({
+        call,
+        openAiApiKey: process.env.OPENAI_API_KEY!,
+        agentUserId: existingAgent.id,
+      });
+      realtimeClient.updateSession({
+        instructions: existingAgent.instructions,
+      });
+    } catch (error) {
+      console.error("Failed to connect OpenAI:", error);
+      return NextResponse.json(
+        { error: "Failed to initialize AI agent" },
+        { status: 500 }
+      );
+    }
   } else if (eventType === "call.session_participation_left") {
     const event = payload as CallSessionParticipantLeftEvent;
     const meetingId = event.call_cid.split(":")[1]; // call_cid is formatted as type:id

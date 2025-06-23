@@ -12,7 +12,7 @@ export const CallUI = ({ meetingName }: Props) => {
 
   const handleJoin = async () => {
     if (!call) return;
-    await call.join();
+    call.join();
     setShow("call");
   };
 
