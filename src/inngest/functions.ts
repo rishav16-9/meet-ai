@@ -8,7 +8,7 @@ import { eq, inArray } from "drizzle-orm";
 import { createAgent, openai, TextMessage } from "@inngest/agent-kit";
 
 const summarizer = createAgent({
-  name: "summarizere",
+  name: "summarizer",
   system: `
     You are an expert summarizer. You write readable, concise, simple content. You are given a transcript of a meeting and you need to summarize it.
 
@@ -43,13 +43,13 @@ export const meetingsProcessing = inngest.createFunction(
       return fetch(event.data.transcriptUrl).then((res) => res.text());
     });
 
-    const trancript = await step.run("parse-transcript", async () => {
+    const transcript = await step.run("parse-transcript", async () => {
       return JSONL.parse<StreamTranscriptItem>(response);
     });
 
     const transcriptWithSpeaker = await step.run("add-speaker", async () => {
       const speakersIds = [
-        ...new Set(trancript.map((item) => item.speaker_id)),
+        ...new Set(transcript.map((item) => item.speaker_id)),
       ];
 
       const userSpeaker = await db
@@ -74,7 +74,7 @@ export const meetingsProcessing = inngest.createFunction(
 
       const speakers = [...userSpeaker, ...agentSpeaker];
 
-      return trancript.map((item) => {
+      return transcript.map((item) => {
         const speaker = speakers.find(
           (speaker) => speaker.id === item.speaker_id
         );
