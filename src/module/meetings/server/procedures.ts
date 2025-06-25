@@ -27,7 +27,7 @@ import JSONL from "jsonl-parse-stringify";
 import { streamChat } from "@/lib/stream-chat";
 
 export const meetingsRouter = createTRPCRouter({
-  generateChatToke: protectedProcedure.mutation(async ({ ctx }) => {
+  generateChatToken: protectedProcedure.mutation(async ({ ctx }) => {
     const token = streamChat.createToken(ctx.auth.user.id);
     await streamChat.upsertUser({
       id: ctx.auth.user.id,

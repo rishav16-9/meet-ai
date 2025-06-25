@@ -205,7 +205,7 @@ export async function POST(req: NextRequest) {
       .where(and(eq(meetings.id, channelId), eq(meetings.status, "completed")));
 
     if (!existingMeeting) {
-      return NextResponse.json({ error: "Missing not found" }, { status: 404 });
+      return NextResponse.json({ error: "Meeting not found" }, { status: 404 });
     }
     const [existingAgent] = await db
       .select()
@@ -213,7 +213,7 @@ export async function POST(req: NextRequest) {
       .where(eq(agents.id, existingMeeting.agentId));
 
     if (!existingAgent) {
-      return NextResponse.json({ error: "Missing meetingId" }, { status: 404 });
+      return NextResponse.json({ error: "Agent not found" }, { status: 404 });
     }
 
     if (userId !== existingAgent.id) {

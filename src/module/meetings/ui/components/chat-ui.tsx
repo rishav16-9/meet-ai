@@ -30,7 +30,7 @@ export const ChatUI = ({
 }: Props) => {
   const trpc = useTRPC();
   const { mutateAsync: generateChatToken } = useMutation(
-    trpc.meetings.generateChatToke.mutationOptions()
+    trpc.meetings.generateChatToken.mutationOptions()
   );
   const [channel, setChannel] = useState<StreamChannel>();
   const client = useCreateChatClient({
