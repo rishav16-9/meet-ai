@@ -37,8 +37,13 @@ export const MeetingsIdView = ({ meetingId }: MeetingsIdViewProps) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const remove = useMutation(
     trpc.meetings.remove.mutationOptions({
-      onSuccess: () => {
-        queryClient.invalidateQueries(trpc.meetings.getMany.queryOptions({}));
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(
+          trpc.meetings.getMany.queryOptions({})
+        );
+        await queryClient.invalidateQueries(
+          trpc.premium.getFreeUsage.queryOptions()
+        );
         router.push("/meetings");
       },
       onError: (error) => {
@@ -75,7 +80,7 @@ export const MeetingsIdView = ({ meetingId }: MeetingsIdViewProps) => {
         {isCancelled && <CancelledState />}
         {isProcessing && <ProcessingState />}
         {isActive && <ActiveState meetingId={data.id} />}
-        {isCompleted && <CompletedState data={data}/>}
+        {isCompleted && <CompletedState data={data} />}
         {isUpcoming && (
           <UpcomingState
             meetingId={data.id}

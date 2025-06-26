@@ -36,6 +36,9 @@ export const AgentIdView = ({ agentId }: AgentIdViewProps) => {
         await queryClient.invalidateQueries(
           trpc.agents.getMany.queryOptions({})
         );
+        await queryClient.invalidateQueries(
+          trpc.premium.getFreeUsage.queryOptions()
+        );
         router.push("/agents");
       },
       onError: (error) => {
